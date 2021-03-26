@@ -9,9 +9,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.nursery.constants.Urls;
 import com.example.nursery.network.ImageRequester;
+import com.example.nursery.network.account.AccountService;
+import com.example.nursery.network.account.dto.LoginDTO;
+import com.example.nursery.network.account.dto.LoginResultDTO;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,17 +30,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String url = "http://10.0.2.2:5000/images/1.jpg";
+        String url = Urls.BASE_URL + "/images/1.jpg";
 
         imageRequester = ImageRequester.getInstance();
         myImage = findViewById(R.id.myImage);
         imageRequester.setImageFromUrl(myImage, url);
-    }
-
-    public void onChange(View view) {
-        final TextInputEditText email = findViewById(R.id.textFieldEmail);
-        Log.d("change email", email.getText().toString());
-
     }
 
     public void onClickLogin(View view) {
@@ -40,15 +42,26 @@ public class MainActivity extends AppCompatActivity {
         final TextInputLayout passwordLayout = findViewById(R.id.inputLayoutPassword);
         final TextInputEditText email = findViewById(R.id.textFieldEmail);
         final TextInputEditText password = findViewById(R.id.textFieldPassword);
-        final Button button = findViewById(R.id.buttonSave);
-        if (email.getText().toString().contains("@") && password.getText() != null) {
-            button.setText("Good !");
-        }
-        else {
-            emailLayout.setError("We have error !");
-            passwordLayout.setError("We have error !");
-        }
 
-//        Log.d("clickLogin", email.getText().toString().contains("@"));
+        LoginDTO model = new LoginDTO(
+                email.getText().toString(),
+                password.getText().toString()
+        );
+
+        AccountService.getInstance()
+                .getJSONApi()
+                .login(model)
+                .enqueue(new Callback<LoginResultDTO>() {
+                    @Override
+                    public void onResponse(Call<LoginResultDTO> call, Response<LoginResultDTO> response) {
+                        LoginResultDTO result = response.body();
+                        Log.d("Good request", result.getToken());
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResultDTO> call, Throwable t) {
+
+                    }
+                });
     }
 }
