@@ -1,29 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Nursery.Application.Account;
+using Nursery.Application.Account.Login;
+using Nursery.Application.Account.Registration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nursery.WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [Produces("application/json")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
-        public AccountController()
+        [HttpPost("login")]
+        public async Task<ActionResult<UserViewModel>> LoginAsync(LoginCommand query)
         {
-
+            Thread.Sleep(5000);
+            return await Mediator.Send(query);
         }
-
-        [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login([FromBody]LoginDTO model)
+        [HttpPost("registration")]
+        public async Task<ActionResult<UserViewModel>> RegistrationAsync(RegistrationCommand command)
         {
-            return Ok(new
-            {
-                token = "dwef234vasr57uvacd234yfcs890qsdfrhjjl"
-            });
+            return await Mediator.Send(command);
         }
     }
 }

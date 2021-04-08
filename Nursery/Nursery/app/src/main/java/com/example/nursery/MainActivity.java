@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.nursery.constants.Urls;
@@ -30,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String url = Urls.BASE_URL + "/images/1.jpg";
-
+        String url = Urls.BASE_URL+"/images/1.jpg";
+        //String url = "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg?resize=750px:*";
         imageRequester = ImageRequester.getInstance();
         myImage = findViewById(R.id.myImage);
         imageRequester.setImageFromUrl(myImage, url);
@@ -39,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickLogin(View view) {
         final TextInputLayout emailLayout = findViewById(R.id.inputLayoutEmail);
-        final TextInputLayout passwordLayout = findViewById(R.id.inputLayoutPassword);
         final TextInputEditText email = findViewById(R.id.textFieldEmail);
+        final TextInputLayout emailPassword = findViewById(R.id.inputLayoutPassword);
         final TextInputEditText password = findViewById(R.id.textFieldPassword);
-
+        //Log.d("clickLogin", email.getText().toString());
+        //emailLayout.setError("У нас проблеми");
         LoginDTO model = new LoginDTO(
                 email.getText().toString(),
                 password.getText().toString()
         );
-
         AccountService.getInstance()
                 .getJSONApi()
                 .login(model)
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<LoginResultDTO> call, Response<LoginResultDTO> response) {
                         LoginResultDTO result = response.body();
-                        Log.d("Good request", result.getToken());
+                        Log.d("Good Request", result.getToken());
                     }
 
                     @Override
