@@ -14,15 +14,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nursery">
-        <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".RegisterActivity">
+<!--        android:theme="@style/AppTheme.ProfileTheme"-->
+        <activity android:name=".RecycleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.ProfileTheme"></activity>
+        <activity android:name=".RegisterActivity">
+        </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

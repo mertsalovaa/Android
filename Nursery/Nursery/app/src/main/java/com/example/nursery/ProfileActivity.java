@@ -1,6 +1,7 @@
 package com.example.nursery;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -21,26 +22,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        TextView tv = findViewById(R.id.textView2);
-        ApiWebService.getInstance()
-                .getJSONApi()
-                .profile()
-                .enqueue(new Callback<ProfileResultDTO>() {
-                    @Override
-                    public void onResponse(Call<ProfileResultDTO> call, Response<ProfileResultDTO> response) {
-                        if(response.isSuccessful())
-                        {
-                            ProfileResultDTO result = response.body();
-                            String image = result.getImage();
-                            tv.setText(image);
-                        }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProfileResultDTO> call, Throwable t) {
-                        Log.e("problem","problem API"+ t.getMessage());
-                    }
-                });
     }
 }
