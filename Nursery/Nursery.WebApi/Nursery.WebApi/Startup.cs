@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Nursery.Application.Account.Login;
 using Nursery.Application.Account.Registration;
+using Nursery.Application.Animal;
 using Nursery.Application.Interfaces;
 using Nursery.Domain;
 using Nursery.EFData;
@@ -50,6 +51,7 @@ namespace Nursery.WebApi
                 .UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMediatR(typeof(LoginHandler).Assembly);
+            services.AddMediatR(typeof(AnimalHandler).Assembly);
 
             services.AddMvc().AddFluentValidation();
 
@@ -60,6 +62,7 @@ namespace Nursery.WebApi
             services.AddScoped<IJwtGenerator, JwtGenerator>();
 
             services.AddTransient<IValidator<LoginCommand>, LoginValidation>();
+            services.AddTransient<IValidator<AnimalCommand>, AnimalValidation>();
             services.AddTransient<IValidator<RegistrationCommand>, RegistrationValidation>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
